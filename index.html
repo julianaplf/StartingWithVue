@@ -8,7 +8,14 @@
 <body>
 	<div id="shopping-list">
 		<h1>{{header}}</h1>
-		<input type="text" v-model="header">
+		<div class="add-item-form">
+			<input type="text" v-model="newItem" @keyup.enter="items.push(newItem)" placeholder="Add new Item">
+			<button class="btn" @click="inclui(); limpa();">Save item</button>
+		</div>
+		
+		<ul>
+			<li v-for="item in items">{{ item }}</li>
+		</ul>
 	</div>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.17/vue.js"></script>
@@ -16,7 +23,17 @@
 		new Vue({
 			el: '#shopping-list',
 			data: {
-				header: "Olar"
+				header: "Olar",
+				newItem: '',
+				items: ['oi','tchau'],
+			},
+			methods: {
+								inclui:function(){
+                   this.items.push(this.newItem);
+                },
+                limpa:function(){
+                   this.newItem = ' ';
+                },
 			}
 		});
 	</script>
