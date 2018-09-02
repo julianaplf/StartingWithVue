@@ -11,12 +11,13 @@
 		<h1>{{header}}</h1>
 		<button v-if="estado === 'default'" @click="changeState('edit')" class="btn btn-primary">Add item</button>
 		
-		<button v-else @click="changeState('default')"  class="btn btn-cancel">Cancel</button>
+		<button v-else @click="changeState('default')" class="btn btn-cancel">Cancel</button>
 
 		<div class="add-item-form" v-if="estado === 'edit'">
 			<input type="text" v-model="newItem" @keyup.enter="items.push(newItem)" placeholder="Add new Item">
-			<button class="btn btn-primary" @click="inclui();">Save item</button>
-
+			<button class="btn btn-primary" v-bind:disabled="newItem.length === 0" @click="inclui();">Save item</button>
+			
+			<a v-bind:href="newItem" target="_blank">Link Dinâmico</a>
 			<ul>
 				<li v-for="item in items">{{ item }}</li>
 			</ul>
@@ -40,7 +41,7 @@
 			methods: {
 				inclui:function(){
 					this.items.push(this.newItem);
-					this.newItem = ' ';
+					this.newItem = '';
 				},
 				changeState: function(arg){
 					this.estado = arg;
