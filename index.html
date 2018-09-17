@@ -4,6 +4,11 @@
 	<meta charset="UTF-8">
 	<title>Document</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+	<style>
+	.strikeout {
+		text-decoration: line-through;
+	}
+</style>
 </head>
 
 <body>
@@ -15,6 +20,7 @@
 
 		<div class="add-item-form" v-if="estado === 'edit'">
 			<input type="text" v-model="newItem" @keyup.enter="items.push(newItem)" placeholder="Add new Item">
+			<p>{{characterCount}} / 15</p>
 			<button class="btn btn-primary" v-bind:disabled="newItem.length === 0" @click="inclui();">Save item</button>
 			
 			<a v-bind:href="newItem" target="_blank">Link Dinâmico</a>
@@ -22,7 +28,12 @@
 				<li v-for="item in items">{{ item }}</li>
 			</ul>
 
+		</div>
 
+		<div class="testando">
+			<ul>
+				<li v-for="newitem in novoItems" :class="{strikeout: newitem.comprado}" @click="toggleCompra(newitem);">{{ newitem.label }}</li>
+			</ul>
 		</div>
 
 		<p v-if="items.length === 0 && estado === 'default'"> Adicione itens à sua lista</p>
@@ -37,22 +48,47 @@
 				header: "App de Lista de Compras",
 				newItem: '',
 				items: [],
-			},
-			methods: {
-				inclui:function(){
-					this.items.push(this.newItem);
-					this.newItem = '';
+				novoItems: [
+				{
+					label: '10 copos de leite',
+					comprado: true, 
 				},
-				changeState: function(arg){
-					this.estado = arg;
+				{
+					label: '20 ovos',
+					comprado: false, 
+				},
+				{
+					label: '7 pacotes de Oreo',
+					comprado: false, 
+				}
+				]
+			},
+			computed: {
+				characterCount(){
+					if (this.newItem.length <= 15) {
+						return this.newItem.length;
+					} else {
+						return 'Ultrapassou o limite de caracteres';
+					}
+				}},
+				methods: {
+					inclui:function(){
+						this.items.push(this.newItem);
+						this.newItem = '';
+					},
+					changeState: function(arg){
+						this.estado = arg;
 
-					if (arg == 'default'){
-						this.items = '';
+						if (arg == 'default'){
+							this.items = '';
+						}
+					},
+					toggleCompra: function(item){
+						item.comprado = !item.comprado;
 					}
 				}
-			}
-		});
-	</script>
-</body>
+			});
+		</script>
+	</body>
 
-</html>
+	</html>
